@@ -92,20 +92,20 @@
       <div class="carousel-item">
         <h3>How We Met</h3>
         <p>On Discord, Feb 23, 2021 — Our story began.</p>
-        <img src="photo1.jpg" />
-        <img src="photo2.jpg" />
+        <img src="images/photo1.jpg" />
+        <img src="images/photo2.jpg" />
       </div>
       <div class="carousel-item">
         <h3>Late Night Talks</h3>
         <p>Those endless calls became our favorite place.</p>
-        <img src="photo3.jpg" />
-        <img src="photo6.jpg" />
+        <img src="images/photo3.jpg" />
+        <img src="images/photo6.jpg" />
       </div>
       <div class="carousel-item">
         <h3>The Realization</h3>
         <p>It wasn't just friendship. It was love.</p>
-        <img src="photo4.jpg" />
-        <img src="photo5.jpg" />
+        <img src="images/photo4.jpg" />
+        <img src="images/photo5.jpg" />
       </div>
     </div>
   </div>
@@ -115,10 +115,10 @@
 
     <div class="quiz-question">
       <h3>1. Which song reminds me of you?</h3>
-      <button onclick="playSong('https://open.spotify.com/track/4ZVfIGaZP93t0stmBj4FqA')">Teri Yaadon Mein</button>
-      <button onclick="playSong('https://open.spotify.com/track/6hItJt1s32Z8iIYxlwZBcZ')">Husna</button>
-      <button onclick="playSong('https://open.spotify.com/track/6v4OWxDDulyvjWfRXPjA8Y')">Jutti Meri</button>
-      <button onclick="playSong('https://open.spotify.com/track/17opN752ZQpNuoptelsNQ1')">Pehli Nazar Mein</button>
+      <button onclick="playLocalSong('teri')">Teri Yaadon Mein</button>
+      <button onclick="playLocalSong('husna')">Husna</button>
+      <button onclick="playLocalSong('jutti')">Jutti Meri</button>
+      <button onclick="playLocalSong('pehli')">Pehli Nazar Mein</button>
     </div>
 
     <div class="quiz-question">
@@ -153,28 +153,61 @@
   <div id="correct-song">Perfect choice! Playing it for you now...</div>
 
   <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const bgMusic = document.getElementById('bg-music');
+      if (bgMusic) {
+        bgMusic.volume = 0.3;
+      }
+    });
+
     function showTempMessage(id) {
       const el = document.getElementById(id);
       el.style.display = 'flex';
       setTimeout(() => el.style.display = 'none', 2000);
     }
+
     function playSong(link) {
       window.open(link, '_blank');
       showTempMessage('correct-song');
     }
+
+    function playLocalSong(songName) {
+      const songIds = ['teri', 'husna', 'jutti', 'pehli'];
+      songIds.forEach(id => {
+        const s = document.getElementById(`song-${id}`);
+        if (s) { s.pause(); s.currentTime = 0; }
+      });
+      const song = document.getElementById(`song-${songName}`);
+      if (song) {
+        song.play();
+        showTempMessage('correct-song');
+      }
+    }
+
     function animalAnswer(animal) {
       if(animal === 'lioness') showTempMessage('celebration');
       else showTempMessage('sad-reaction');
     }
+
     function marryAnswer(ans) {
       if(ans === 'dumb') showTempMessage('cute-reaction');
       else showTempMessage('celebration');
     }
+
     function marryTime(time) {
       if(time === '27') showTempMessage('celebration');
       else if(time === '60') showTempMessage('angry-reaction');
       else showTempMessage('sad-reaction');
     }
   </script>
+
+  <audio id="bg-music" autoplay loop>
+    <source src="assets/audio/piano.mp3" type="audio/mpeg">
+  </audio>
+
+  <audio id="song-teri"><source src="assets/audio/teri.mp3" type="audio/mpeg"></audio>
+  <audio id="song-husna"><source src="assets/audio/husna.mp3" type="audio/mpeg"></audio>
+  <audio id="song-jutti"><source src="assets/audio/jutti.mp3" type="audio/mpeg"></audio>
+  <audio id="song-pehli"><source src="assets/audio/pehli.mp3" type="audio/mpeg"></audio>
 </body>
 </html>
